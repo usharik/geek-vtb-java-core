@@ -45,8 +45,6 @@ public abstract class Pet {
         this.human = human;
     }
 
-    public abstract void voice();
-
     @Override
     public String toString() {
         return "{Name: " + getName() + ", Age: " + getAge() + ", Owner: " + getHuman() + "}";

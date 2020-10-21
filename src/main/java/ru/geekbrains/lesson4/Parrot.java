@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson4;
 
-public class Parrot extends Pet {
+public class Parrot extends Pet implements Voiceable {
 
     public Parrot(String name, int age, Human human) {
         super(name, age, human);

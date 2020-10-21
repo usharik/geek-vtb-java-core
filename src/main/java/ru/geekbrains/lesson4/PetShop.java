@@ -25,7 +25,10 @@ public class PetShop {
 
     public void soundAllVoices() {
         for (Pet pet: pets) {
-            pet.voice();
+            if (pet instanceof Voiceable) {
+                Voiceable voiceable = (Voiceable) pet;
+                voiceable.voice();
+            }
         }
     }
 
@@ -39,7 +42,8 @@ public class PetShop {
         PetShop petShop = new PetShop(
                 new Cat("Мурзик", 3),
                 new Dog("Тим", 5),
-                new Hamster("Хомка", 1)
+                new Hamster("Хомка", 1),
+                new Fish("Фредди", 1, null)
         );
 
         Object obj = petShop;

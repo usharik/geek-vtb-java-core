@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson4;
 
-public class Hamster extends Pet {
+public class Hamster extends Pet implements Voiceable {
 
     public Hamster(String name, int age, Human human) {
         super(name, age, human);

@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson4;
 
-public final class Cat extends Pet {
+public final class Cat extends Pet implements Voiceable {
 
     public Cat(String name, int age, Human human) {
         super(name, age, human);
