@@ -11,9 +11,13 @@ public class Threadmill extends Obstacle {
 
     @Override
     public boolean canPass(Participant participant) {
-        boolean result = participant.getMaxRunLength() >= length;
-        System.out.printf("Участник %s %s пробежал дорожку длинной %d%n",
-                participant.getName(), result ? "" : "не", length);
-        return result;
+        if (participant instanceof Runable) {
+            Runable runable = (Runable) participant;
+            boolean result = runable.getMaxRunLength() >= length;
+            System.out.printf("Участник %s %s пробежал дорожку длинной %d%n",
+                    participant.getName(), result ? "" : "не", length);
+            return result;
+        }
+        return false;
     }
 }

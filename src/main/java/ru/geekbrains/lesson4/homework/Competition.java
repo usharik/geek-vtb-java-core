@@ -25,15 +25,16 @@ public class Competition {
     public static void main(String[] args) {
 
         Competition competition = new Competition(
-                new Participant[] {
+                new Participant[]{
                         new Cat("Барсик", 10, 50),
-                        new Human("Вася", 20, 15),
+                        new Human("Вася", 20, 15, 20),
                         new Robot("Вертер", 100)
                 },
-                new Obstacle[] {
+                new Obstacle[]{
                         new Threadmill("Дорожка", 5),
                         new Wall("Стена", 7),
-                        new Threadmill("Дорожка", 15)
+                        new Threadmill("Дорожка", 15),
+                        new SwimingPool("Бассейн", 8)
                 }
         );
 
