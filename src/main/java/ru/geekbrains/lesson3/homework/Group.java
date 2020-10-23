@@ -27,15 +27,14 @@ public class Group {
                 }
             }
             if (isNoPlace) {
-                System.out.println("No place for all employees");
-                break;
+                throw new IllegalArgumentException("No place for all employees");
             }
         }
     }
 
     public void deleteEmployee(int ix) {
         if (ix < 0 || ix >= MAX_EMPLOYEE_COUNT) {
-            System.out.println("Incorrect index: " + ix);
+            throw new IllegalArgumentException("Incorrect index: " + ix);
         }
         employees[ix] = null;
     }
