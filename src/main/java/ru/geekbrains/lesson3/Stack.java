@@ -1,7 +1,5 @@
 package ru.geekbrains.lesson3;
 
-import java.util.Arrays;
-
 public class Stack {
 
     private int[] stack;
