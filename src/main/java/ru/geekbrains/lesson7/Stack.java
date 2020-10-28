@@ -20,7 +20,6 @@ public class Stack<T> {
         Stack<Number> numberStack = new Stack<>();
         Stack<Object> objectStack = new Stack<>();
 
-
         intStack.push(1);
         intStack.push(2);
         intStack.push(3);
