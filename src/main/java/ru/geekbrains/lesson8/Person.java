@@ -1,12 +1,17 @@
 package ru.geekbrains.lesson8;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Person implements Comparable<Person> {
+public class Person implements Comparable<Person>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String name;
 
     private String surname;
+
+    private transient String transientField;
 
     public Person(String name, String surname) {
         this.name = name;
