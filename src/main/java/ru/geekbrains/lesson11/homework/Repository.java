@@ -24,6 +24,8 @@ public class Repository<T> {
 
     private final PreparedStatement selectByIdStatement;
 
+    private final PreparedStatement selectAllStatement;
+
     private final PreparedStatement insertStatement;
 
     public Repository(Class<T> repositoryClass, Connection connection) throws SQLException {
@@ -36,15 +38,18 @@ public class Repository<T> {
         }
         this.tableName = dbTable.tableName();
 
+        DbId dbId = null;
+        boolean dbIdFound = false;
         this.columns = new ArrayList<>();
         for (Field field : repositoryClass.getDeclaredFields()) {
-            field.setAccessible(true);
-            // TODO если поле с аннотацией @DbId не найдено, то выдать сообщение об ошибке
-            // TODO проверить, чтобы поле с аннотацией @DbId было только одно. Если их больше, то выдать сообщение об ошибке
-            DbId dbId = field.getAnnotation(DbId.class);
+            dbId = field.getAnnotation(DbId.class);
             if (dbId != null) {
+                if (dbIdFound) {
+                    throw new IllegalStateException("More then one field with @DbId in class " + repositoryClass.getSimpleName());
+                }
                 ColumnInfo columnInfo = new ColumnInfo(field.getName(), field.getName(), field.getType(), true);
                 columns.add(columnInfo);
+                dbIdFound = true;
                 continue;
             }
             DbColumn dbColumn = field.getAnnotation(DbColumn.class);
@@ -53,15 +58,23 @@ public class Repository<T> {
                 columns.add(columnInfo);
             }
         }
+        if (dbId == null) {
+            throw new IllegalStateException("No field with @DbId in class " + repositoryClass.getSimpleName());
+        }
         createTableIfNotExists();
 
         this.selectByIdStatement = buildSelectByIdStatement();
         this.insertStatement = buildInsertStatement();
+        this.selectAllStatement = buildSelectAllStatement();
     }
 
-    public List<T> findAll() {
-        // TODO
-        return Collections.emptyList();
+    public List<T> findAll() throws SQLException {
+        List<T> result = new ArrayList<>();
+        ResultSet rs = selectAllStatement.executeQuery();
+        while (rs.next()) {
+            result.add(createEntityByResultSet(rs));
+        }
+        return result;
     }
 
     public T findById(Long id) throws SQLException {
@@ -195,6 +208,10 @@ public class Repository<T> {
         query.append(");");
         System.out.println("Insert statement: " + query);
         return connection.prepareStatement(query.toString());
+    }
+
+    private PreparedStatement buildSelectAllStatement() throws SQLException {
+        return connection.prepareStatement("select * from " + tableName);
     }
 
     private static class ColumnInfo {
